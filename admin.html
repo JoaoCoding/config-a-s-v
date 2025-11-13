@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - Actualités Garage A.S.V</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1.5rem;
+      background: #020617;
+      border-radius: 12px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      border: 1px solid #1f2937;
+    }
+    h1, h2, h3 {
+      margin-top: 0;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0.6rem 0.7rem;
+      border-radius: 8px;
+      border: 1px solid #374151;
+      background: #020617;
+      color: #e5e7eb;
+      margin-top: 0.2rem;
+      margin-bottom: 0.7rem;
+      font-size: 0.9rem;
+      resize: vertical;
+    }
+    textarea.small {
+      min-height: 80px;
+    }
+    textarea#json-output {
+      min-height: 180px;
+      font-family: "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+      font-size: 0.85rem;
+      white-space: pre;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      padding: 0.6rem 1.1rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      background: #22c55e;
+      color: #022c22;
+      margin-right: 0.5rem;
+      margin-top: 0.4rem;
+    }
+    .btn.secondary {
+      background: #0f172a;
+      color: #e5e7eb;
+      border: 1px solid #374151;
+    }
+    .btn.danger {
+      background: #b91c1c;
+      color: #fee2e2;
+    }
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+    .actu-card {
+      border-radius: 10px;
+      border: 1px solid #1f2937;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background: #020617;
+    }
+    .actu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      background: #1f2937;
+      color: #9ca3af;
+    }
+    .info {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-top: 0.3rem;
+      margin-bottom: 0.8rem;
+    }
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.2rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+    input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+    }
+    #login-section {
+      text-align: center;
+    }
+    #login-section input[type="password"] {
+      max-width: 250px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 0.2rem 0.7rem;
+      border-radius: 999px;
+      background: #111827;
+      color: #9ca3af;
+      font-size: 0.75rem;
+      margin-bottom: 0.6rem;
+    }
+    .step {
+      margin-bottom: 1.2rem;
+      padding: 0.8rem;
+      border-radius: 8px;
+      background: #020617;
+      border: 1px dashed #1f2937;
+      font-size: 0.85rem;
+    }
+    .step strong {
+      color: #e5e7eb;
+    }
+    code {
+      background: #020617;
+      border-radius: 4px;
+      padding: 0.05rem 0.35rem;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Admin &ndash; Actualités Garage A.S.V</h1>
+
+    <!-- ÉTAPE 0 : pseudo mot de passe simple (juste pour éviter les curieux) -->
+    <section id="login-section">
+      <p class="info">
+        Accès réservé. Ce n'est pas une vraie protection, juste un petit verrou côté navigateur.
+      </p>
+      <label for="admin-password">Mot de passe admin :</label><br>
+      <input type="password" id="admin-password" placeholder="••••••••"><br>
+      <button class="btn" id="login-btn">Entrer</button>
+      <p id="login-error" class="info" style="color:#fca5a5; display:none;">
+        Mot de passe incorrect.
+      </p>
+      <hr style="margin:1.5rem 0; border-color:#1f2937;">
+    </section>
+
+    <!-- ÉTAPE 1 : édition des actualités -->
+    <section id="editor-section" style="display:none;">
+      <div class="step">
+        <span class="pill">Étapes</span>
+        <p><strong>1.</strong> Modifie / ajoute tes actualités ci-dessous.</p>
+        <p><strong>2.</strong> Clique sur <strong>Générer le JSON</strong>.</p>
+        <p><strong>3.</strong> Copie-colle le résultat dans <code>actus.json</code> sur GitHub puis sauvegarde.</p>
+      </div>
+
+      <h2>Liste des actualités</h2>
+      <div id="actus-container"></div>
+
+      <button class="btn secondary" id="add-actu-btn">+ Ajouter une actualité</button>
+
+      <h2 style="margin-top:1.8rem;">JSON à coller dans GitHub</h2>
+      <p class="info">
+        Quand tu cliques sur <strong>Générer le JSON</strong>, copie tout ce bloc
+        puis remplace le contenu du fichier <code>actus.json</code> sur GitHub.
+      </p>
+      <button class="btn" id="generate-json-btn">Générer le JSON</button>
+      <textarea id="json-output" readonly placeholder='{ "actualites": [ ... ] }'></textarea>
+    </section>
+  </div>
+
+  <script>
+    // -------------------------
+    // CONFIG À ADAPTER
+    // -------------------------
+
+    // URL actuelle de ton JSON public
+    const ACTUS_URL = "https://joaocoding.github.io/config-a-s-v/actus.json";
+
+    // Petit mot de passe côté client (pas une vraie sécurité)
+    const ADMIN_PASSWORD = "GARAGE-ASV-ADMIN"; // change-le comme tu veux
+
+    // -------------------------
+    // LOGIN SIMPLIFIÉ
+    // -------------------------
+
+    const loginSection = document.getElementById("login-section");
+    const editorSection = document.getElementById("editor-section");
+    const loginBtn = document.getElementById("login-btn");
+    const loginError = document.getElementById("login-error");
+
+    loginBtn.addEventListener("click", () => {
+      const pwd = document.getElementById("admin-password").value.trim();
+      if (pwd === ADMIN_PASSWORD) {
+        loginSection.style.display = "none";
+        editorSection.style.display = "block";
+        loadActus();
+      } else {
+        loginError.style.display = "block";
+      }
+    });
+
+    // -------------------------
+    // LOGIQUE D'ÉDITION
+    // -------------------------
+
+    let stateActualites = [];
+
+    const actusContainer = document.getElementById("actus-container");
+    const addActuBtn = document.getElementById("add-actu-btn");
+    const generateJsonBtn = document.getElementById("generate-json-btn");
+    const jsonOutput = document.getElementById("json-output");
+
+    function createEmptyActu() {
+      return {
+        titre: "",
+        paragraphes: [],
+        promo: false
+      };
+    }
+
+    function loadActus() {
+      actusContainer.innerHTML = "<p class='info'>Chargement des actualités...</p>";
+      fetch(ACTUS_URL)
+        .then(res => {
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          return res.json();
+        })
+        .then(data => {
+          stateActualites = Array.isArray(data.actualites) ? data.actualites : [];
+          if (!stateActualites.length) {
+            stateActualites.push(createEmptyActu());
+          }
+          renderActus();
+        })
+        .catch(err => {
+          console.error("Erreur chargement actus :", err);
+          stateActualites = [createEmptyActu()];
+          renderActus();
+        });
+    }
+
+    function renderActus() {
+      actusContainer.innerHTML = "";
+      stateActualites.forEach((actu, index) => {
+        const card = document.createElement("div");
+        card.className = "actu-card";
+        card.dataset.index = index;
+
+        const header = document.createElement("div");
+        header.className = "actu-header";
+
+        const titleLabel = document.createElement("div");
+        titleLabel.innerHTML = `<span class="badge">Actu #${index + 1}</span>`;
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "btn danger";
+        deleteBtn.textContent = "Supprimer";
+        deleteBtn.type = "button";
+        deleteBtn.addEventListener("click", () => {
+          if (stateActualites.length === 1) {
+            alert("Tu dois garder au moins une actualité.");
+            return;
+          }
+          stateActualites.splice(index, 1);
+          renderActus();
+        });
+
+        header.appendChild(titleLabel);
+        header.appendChild(deleteBtn);
+        card.appendChild(header);
+
+        // Titre
+        const labelTitre = document.createElement("label");
+        labelTitre.textContent = "Titre :";
+        card.appendChild(labelTitre);
+
+        const inputTitre = document.createElement("input");
+        inputTitre.type = "text";
+        inputTitre.className = "actu-titre";
+        inputTitre.value = actu.titre || "";
+        card.appendChild(inputTitre);
+
+        // Paragraphes
+        const labelPara = document.createElement("label");
+        labelPara.textContent = "Paragraphes (un paragraphe par ligne) :";
+        card.appendChild(labelPara);
+
+        const textareaPara = document.createElement("textarea");
+        textareaPara.className = "actu-paragraphes small";
+        textareaPara.value = Array.isArray(actu.paragraphes)
+          ? actu.paragraphes.join("\n")
+          : "";
+        card.appendChild(textareaPara);
+
+        const infoPara = document.createElement("p");
+        infoPara.className = "info";
+        infoPara.textContent = "Ex : ligne 1 = phrase 1, ligne 2 = phrase 2, etc.";
+        card.appendChild(infoPara);
+
+        // Promo
+        const checkboxRow = document.createElement("div");
+        checkboxRow.className = "checkbox-row";
+
+        const promoCheckbox = document.createElement("input");
+        promoCheckbox.type = "checkbox";
+        promoCheckbox.className = "actu-promo";
+        promoCheckbox.checked = !!actu.promo;
+
+        const promoLabel = document.createElement("label");
+        promoLabel.textContent = "Afficher le bouton “Voir le code promo” pour cette actu";
+
+        checkboxRow.appendChild(promoCheckbox);
+        checkboxRow.appendChild(promoLabel);
+        card.appendChild(checkboxRow);
+
+        actusContainer.appendChild(card);
+      });
+    }
+
+    addActuBtn.addEventListener("click", () => {
+      stateActualites.push(createEmptyActu());
+      renderActus();
+    });
+
+    function buildJsonFromDom() {
+      const cards = Array.from(document.querySelectorAll(".actu-card"));
+      const actualites = cards.map(card => {
+        const titre = card.querySelector(".actu-titre").value.trim();
+        const paraRaw = card
+          .querySelector(".actu-paragraphes")
+          .value
+          .split("\n")
+          .map(p => p.trim())
+          .filter(p => p.length > 0);
+        const promo = card.querySelector(".actu-promo").checked;
+
+        return {
+          titre: titre,
+          paragraphes: paraRaw,
+          promo: promo
+        };
+      });
+
+      return JSON.stringify({ actualites }, null, 2);
+    }
+
+    generateJsonBtn.addEventListener("click", () => {
+      const json = buildJsonFromDom();
+      jsonOutput.value = json;
+      jsonOutput.focus();
+      jsonOutput.select();
+    });
+  </script>
+</body>
+</html>
