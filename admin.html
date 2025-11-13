@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Admin - Actualités Garage A.S.V</title>
+  <title>Admin – Actualités Garage A.S.V</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
@@ -10,7 +10,6 @@
       background: #0f172a;
       color: #e5e7eb;
       margin: 0;
-      padding: 0;
     }
     .container {
       max-width: 900px;
@@ -18,57 +17,38 @@
       padding: 1.5rem;
       background: #020617;
       border-radius: 12px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
       border: 1px solid #1f2937;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     }
-    h1, h2, h3 {
-      margin-top: 0;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-    label {
-      font-size: 0.9rem;
-      opacity: 0.9;
-    }
-    input[type="text"], input[type="password"], textarea {
+    h1 { text-align: center; margin-top: 0; }
+    label { font-size: 0.9rem; opacity: 0.9; }
+    input, textarea {
       width: 100%;
-      box-sizing: border-box;
-      padding: 0.6rem 0.7rem;
+      margin-top: .2rem;
+      margin-bottom: .7rem;
+      padding: .6rem .7rem;
       border-radius: 8px;
       border: 1px solid #374151;
       background: #020617;
       color: #e5e7eb;
-      margin-top: 0.2rem;
-      margin-bottom: 0.7rem;
-      font-size: 0.9rem;
-      resize: vertical;
+      box-sizing: border-box;
+      font-size: .9rem;
     }
-    textarea.small {
-      min-height: 80px;
-    }
-    textarea#json-output {
-      min-height: 180px;
-      font-family: "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
-      font-size: 0.85rem;
-      white-space: pre;
-    }
+    textarea.small { min-height: 80px; resize: vertical; }
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.35rem;
-      padding: 0.6rem 1.1rem;
+      padding: .6rem 1.1rem;
       border-radius: 999px;
       border: none;
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: .9rem;
       font-weight: 500;
       background: #22c55e;
       color: #022c22;
-      margin-right: 0.5rem;
-      margin-top: 0.4rem;
+      margin-right: .5rem;
+      margin-top: .4rem;
     }
     .btn.secondary {
       background: #0f172a;
@@ -80,7 +60,7 @@
       color: #fee2e2;
     }
     .btn:disabled {
-      opacity: 0.4;
+      opacity: 0.5;
       cursor: default;
     }
     .actu-card {
@@ -94,330 +74,377 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 0.5rem;
+      margin-bottom: .5rem;
     }
     .badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.2rem 0.6rem;
+      display: inline-block;
+      padding: .2rem .6rem;
       border-radius: 999px;
-      font-size: 0.75rem;
       background: #1f2937;
+      font-size: .75rem;
       color: #9ca3af;
     }
     .info {
-      font-size: 0.85rem;
+      font-size: .85rem;
       color: #9ca3af;
       margin-top: 0.3rem;
-      margin-bottom: 0.8rem;
     }
     .checkbox-row {
       display: flex;
       align-items: center;
-      gap: 0.4rem;
-      margin-top: 0.2rem;
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
+      gap: .4rem;
+      margin: .3rem 0;
     }
     input[type="checkbox"] {
       width: 16px;
       height: 16px;
     }
-    #login-section {
-      text-align: center;
+    .status {
+      margin-top: 1rem;
+      font-size: .85rem;
     }
-    #login-section input[type="password"] {
-      max-width: 250px;
+    .status.ok { color: #4ade80; }
+    .status.err { color: #fca5a5; }
+    .row-inline {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 0.7rem;
     }
-    .pill {
-      display: inline-block;
-      padding: 0.2rem 0.7rem;
-      border-radius: 999px;
-      background: #111827;
-      color: #9ca3af;
-      font-size: 0.75rem;
-      margin-bottom: 0.6rem;
-    }
-    .step {
-      margin-bottom: 1.2rem;
-      padding: 0.8rem;
-      border-radius: 8px;
-      background: #020617;
-      border: 1px dashed #1f2937;
-      font-size: 0.85rem;
-    }
-    .step strong {
-      color: #e5e7eb;
-    }
-    code {
-      background: #020617;
-      border-radius: 4px;
-      padding: 0.05rem 0.35rem;
-      font-size: 0.8rem;
+    .row-inline label {
+      margin: 0;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Admin &ndash; Actualités Garage A.S.V</h1>
+    <h1>Admin – Actualités Garage A.S.V</h1>
 
-    <!-- Login simple -->
-    <section id="login-section">
+    <!-- Auth / config locale -->
+    <section id="auth-section">
       <p class="info">
-        Accès réservé. Ce n'est pas une vraie protection serveur, juste un petit verrou côté navigateur.
+        1) Choisis un <strong>mot de passe admin</strong> (ou réutilise toujours le même).<br>
+        2) Colle ton <strong>token GitHub</strong> (PAT avec droit <code>repo</code>).<br>
+        3) Clique sur <strong>Se connecter & charger les actus</strong>.<br>
+        <br>
+        <strong>Option :</strong> coche "Se souvenir" pour garder mdp + token dans ce navigateur.<br>
+        ⚠️ À utiliser seulement sur ton PC perso.
       </p>
-      <label for="admin-password">Mot de passe admin :</label><br>
-      <input type="password" id="admin-password" placeholder="••••••••"><br>
-      <button class="btn" id="login-btn">Entrer</button>
-      <p id="login-error" class="info" style="color:#fca5a5; display:none;">
-        Mot de passe incorrect.
-      </p>
+
+      <label>Mot de passe admin :</label>
+      <input type="password" id="admin-password" placeholder="Mot de passe admin">
+
+      <label>Token GitHub :</label>
+      <input type="password" id="github-token" placeholder="ghp_...">
+
+      <div class="row-inline">
+        <input type="checkbox" id="remember-creds">
+        <label for="remember-creds">Se souvenir sur ce navigateur</label>
+      </div>
+
+      <button class="btn" id="login-btn">Se connecter & charger les actus</button>
+      <p id="auth-status" class="status"></p>
+
       <hr style="margin:1.5rem 0; border-color:#1f2937;">
     </section>
 
-    <!-- Édition -->
+    <!-- Éditeur d'actus -->
     <section id="editor-section" style="display:none;">
-      <div class="step">
-        <span class="pill">Étapes</span>
-        <p><strong>1.</strong> Modifie / ajoute tes actualités ci-dessous (titre, texte, promo, code promo, date).</p>
-        <p><strong>2.</strong> Clique sur <strong>Générer le JSON</strong>.</p>
-        <p><strong>3.</strong> Copie-colle le résultat dans <code>actus.json</code> sur GitHub puis sauvegarde.</p>
-      </div>
-
-      <h2>Liste des actualités</h2>
-      <div id="actus-container"></div>
-
-      <button class="btn secondary" id="add-actu-btn">+ Ajouter une actualité</button>
-
-      <h2 style="margin-top:1.8rem;">JSON à coller dans GitHub</h2>
       <p class="info">
-        Quand tu cliques sur <strong>Générer le JSON</strong>, copie tout ce bloc
-        puis remplace le contenu du fichier <code>actus.json</code> sur GitHub.
+        • <strong>Titre</strong>, <strong>Date</strong> (YYYY-MM-DD pour le badge “Nouveau !”),<br>
+        • <strong>Paragraphes</strong> (1 par ligne),<br>
+        • <strong>Promo</strong> + <strong>Code promo</strong> (affiché dans la modale sur le site).<br>
+        <br>
+        Quand tu as fini : clique sur <strong>Enregistrer sur GitHub</strong>.
       </p>
-      <button class="btn" id="generate-json-btn">Générer le JSON</button>
-      <textarea id="json-output" readonly placeholder='{ "actualites": [ ... ] }'></textarea>
+
+      <div id="actus-container"></div>
+      <button class="btn secondary" id="add-actu">+ Ajouter une actualité</button>
+
+      <h2 style="margin-top:1.5rem;">Enregistrer sur GitHub</h2>
+      <button class="btn" id="save-btn">Enregistrer sur GitHub</button>
+      <p id="save-status" class="status"></p>
     </section>
   </div>
 
   <script>
-    // -------------------------
-    // CONFIG
-    // -------------------------
-    const ACTUS_URL = "https://joaocoding.github.io/config-a-s-v/actus.json";
-    const ADMIN_PASSWORD = "GARAGE-ASV-ADMIN"; // change-le si tu veux
+    // --- CONFIG FIXE POUR TON REPO ---
+    const GITHUB_USERNAME = "JoaoCoding";
+    const REPO_NAME = "config-a-s-v";
+    const FILE_PATH = "actus.json";
+    const BRANCH = "main";
 
-    // -------------------------
-    // LOGIN
-    // -------------------------
-    const loginSection = document.getElementById("login-section");
-    const editorSection = document.getElementById("editor-section");
+    const STORAGE_KEY = "asv_admin_creds"; // localStorage : {password, token}
+
+    let githubToken = null;
+    let adminPassword = null; // ici c'est juste pour toi, pas envoyé à GitHub
+    let currentSha = null;
+    let stateActualites = [];
+
+    const authStatus = document.getElementById("auth-status");
     const loginBtn = document.getElementById("login-btn");
-    const loginError = document.getElementById("login-error");
+    const tokenInput = document.getElementById("github-token");
+    const passInput = document.getElementById("admin-password");
+    const rememberCheckbox = document.getElementById("remember-creds");
 
-    loginBtn.addEventListener("click", () => {
-      const pwd = document.getElementById("admin-password").value.trim();
-      if (pwd === ADMIN_PASSWORD) {
-        loginSection.style.display = "none";
-        editorSection.style.display = "block";
-        loadActus();
+    const editorSection = document.getElementById("editor-section");
+    const actusContainer = document.getElementById("actus-container");
+    const addActuBtn = document.getElementById("add-actu");
+    const saveBtn = document.getElementById("save-btn");
+    const saveStatus = document.getElementById("save-status");
+
+    function b64DecodeUnicode(str) {
+      return decodeURIComponent(atob(str).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+    }
+
+    function b64EncodeUnicode(str) {
+      return btoa(unescape(encodeURIComponent(str)));
+    }
+
+    // Charger éventuellement les creds mémorisés
+    (function preloadCreds() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        if (data.password) passInput.value = data.password;
+        if (data.token) tokenInput.value = data.token;
+        rememberCheckbox.checked = true;
+      } catch (e) {
+        console.warn("Impossible de lire les identifiants stockés :", e);
+      }
+    })();
+
+    loginBtn.addEventListener("click", async () => {
+      const pwd = passInput.value.trim();
+      const token = tokenInput.value.trim();
+
+      if (!pwd) {
+        authStatus.textContent = "Merci de saisir un mot de passe admin.";
+        authStatus.className = "status err";
+        return;
+      }
+      if (!token) {
+        authStatus.textContent = "Merci de coller ton token GitHub.";
+        authStatus.className = "status err";
+        return;
+      }
+
+      adminPassword = pwd;
+      githubToken = token;
+
+      // Option : mémoriser localement
+      if (rememberCheckbox.checked) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            password: adminPassword,
+            token: githubToken
+          }));
+        } catch (e) {
+          console.warn("Impossible de stocker les identifiants :", e);
+        }
       } else {
-        loginError.style.display = "block";
+        localStorage.removeItem(STORAGE_KEY);
+      }
+
+      authStatus.textContent = "Chargement des actus...";
+      authStatus.className = "status";
+
+      try {
+        const res = await fetch(
+          `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${FILE_PATH}?ref=${BRANCH}`,
+          {
+            headers: {
+              "Authorization": `Bearer ${githubToken}`,
+              "Accept": "application/vnd.github.v3+json`
+            }
+          }
+        );
+
+        if (!res.ok) {
+          const txt = await res.text();
+          authStatus.textContent = "Erreur GitHub (" + res.status + ") : " + txt;
+          authStatus.className = "status err";
+          return;
+        }
+
+        const data = await res.json();
+        currentSha = data.sha;
+        const jsonText = b64DecodeUnicode(data.content);
+        let parsed;
+        try {
+          parsed = JSON.parse(jsonText);
+        } catch (e) {
+          authStatus.textContent = "Le JSON actuel est invalide.";
+          authStatus.className = "status err";
+          return;
+        }
+
+        stateActualites = Array.isArray(parsed.actualites) ? parsed.actualites : [];
+
+        if (!stateActualites.length) {
+          stateActualites.push({
+            titre: "",
+            date: "",
+            paragraphes: [],
+            promo: false,
+            promoCode: ""
+          });
+        }
+
+        authStatus.textContent = "Actus chargées. Tu es connecté.";
+        authStatus.className = "status ok";
+        editorSection.style.display = "block";
+        renderActus();
+      } catch (err) {
+        authStatus.textContent = "Erreur réseau : " + err.message;
+        authStatus.className = "status err";
       }
     });
 
-    // -------------------------
-    // ÉDITION
-    // -------------------------
-    let stateActualites = [];
-
-    const actusContainer = document.getElementById("actus-container");
-    const addActuBtn = document.getElementById("add-actu-btn");
-    const generateJsonBtn = document.getElementById("generate-json-btn");
-    const jsonOutput = document.getElementById("json-output");
-
-    function createEmptyActu() {
-      return {
-        titre: "",
-        date: "",
-        paragraphes: [],
-        promo: false,
-        promoCode: ""
-      };
-    }
-
-    function loadActus() {
-      actusContainer.innerHTML = "<p class='info'>Chargement des actualités...</p>";
-      fetch(ACTUS_URL)
-        .then(res => {
-          if (!res.ok) throw new Error("HTTP " + res.status);
-          return res.json();
-        })
-        .then(data => {
-          const arr = Array.isArray(data.actualites) ? data.actualites : [];
-          // On normalise les objets pour être sûr qu'ils aient tous les champs
-          stateActualites = arr.map(a => ({
-            titre: a.titre || "",
-            date: a.date || "",
-            paragraphes: Array.isArray(a.paragraphes) ? a.paragraphes : [],
-            promo: !!a.promo,
-            promoCode: a.promoCode || ""
-          }));
-
-          if (!stateActualites.length) {
-            stateActualites.push(createEmptyActu());
-          }
-
-          renderActus();
-        })
-        .catch(err => {
-          console.error("Erreur chargement actus :", err);
-          stateActualites = [createEmptyActu()];
-          renderActus();
-        });
-    }
-
     function renderActus() {
       actusContainer.innerHTML = "";
-      stateActualites.forEach((actu, index) => {
+      stateActualites.forEach((a, index) => {
         const card = document.createElement("div");
         card.className = "actu-card";
-        card.dataset.index = index;
 
         const header = document.createElement("div");
         header.className = "actu-header";
+        header.innerHTML = `<span class="badge">Actu #${index + 1}</span>`;
 
-        const titleLabel = document.createElement("div");
-        titleLabel.innerHTML = `<span class="badge">Actu #${index + 1}</span>`;
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.className = "btn danger";
-        deleteBtn.textContent = "Supprimer";
-        deleteBtn.type = "button";
-        deleteBtn.addEventListener("click", () => {
+        const delBtn = document.createElement("button");
+        delBtn.className = "btn danger";
+        delBtn.type = "button";
+        delBtn.textContent = "Supprimer";
+        delBtn.onclick = () => {
           if (stateActualites.length === 1) {
-            alert("Tu dois garder au moins une actualité.");
+            alert("Garde au moins une actualité.");
             return;
           }
           stateActualites.splice(index, 1);
           renderActus();
-        });
+        };
 
-        header.appendChild(titleLabel);
-        header.appendChild(deleteBtn);
+        header.appendChild(delBtn);
         card.appendChild(header);
 
-        // Titre
         const labelTitre = document.createElement("label");
         labelTitre.textContent = "Titre :";
-        card.appendChild(labelTitre);
-
         const inputTitre = document.createElement("input");
-        inputTitre.type = "text";
-        inputTitre.className = "actu-titre";
-        inputTitre.value = actu.titre || "";
-        card.appendChild(inputTitre);
+        inputTitre.value = a.titre || "";
+        inputTitre.oninput = e => a.titre = e.target.value;
 
-        // Date
         const labelDate = document.createElement("label");
         labelDate.textContent = "Date (YYYY-MM-DD) pour le badge “Nouveau !” :";
-        card.appendChild(labelDate);
-
         const inputDate = document.createElement("input");
-        inputDate.type = "text";
-        inputDate.className = "actu-date";
         inputDate.placeholder = "2025-11-13";
-        inputDate.value = actu.date || "";
-        card.appendChild(inputDate);
+        inputDate.value = a.date || "";
+        inputDate.oninput = e => a.date = e.target.value;
 
-        // Paragraphes
         const labelPara = document.createElement("label");
-        labelPara.textContent = "Paragraphes (un paragraphe par ligne) :";
-        card.appendChild(labelPara);
-
+        labelPara.textContent = "Paragraphes (un par ligne) :";
         const textareaPara = document.createElement("textarea");
-        textareaPara.className = "actu-paragraphes small";
-        textareaPara.value = Array.isArray(actu.paragraphes)
-          ? actu.paragraphes.join("\n")
-          : "";
-        card.appendChild(textareaPara);
+        textareaPara.className = "small";
+        textareaPara.value = Array.isArray(a.paragraphes) ? a.paragraphes.join("\n") : "";
+        textareaPara.oninput = e => {
+          a.paragraphes = e.target.value
+            .split("\n")
+            .map(p => p.trim())
+            .filter(p => p.length > 0);
+        };
 
-        const infoPara = document.createElement("p");
-        infoPara.className = "info";
-        infoPara.textContent = "Ex : ligne 1 = phrase 1, ligne 2 = phrase 2, etc.";
-        card.appendChild(infoPara);
-
-        // Promo + Code promo
         const checkboxRow = document.createElement("div");
         checkboxRow.className = "checkbox-row";
-
         const promoCheckbox = document.createElement("input");
         promoCheckbox.type = "checkbox";
-        promoCheckbox.className = "actu-promo";
-        promoCheckbox.checked = !!actu.promo;
-
+        promoCheckbox.checked = !!a.promo;
+        promoCheckbox.onchange = e => a.promo = e.target.checked;
         const promoLabel = document.createElement("label");
         promoLabel.textContent = "Afficher un code promo pour cette actu";
-
         checkboxRow.appendChild(promoCheckbox);
         checkboxRow.appendChild(promoLabel);
-        card.appendChild(checkboxRow);
 
         const labelCode = document.createElement("label");
-        labelCode.textContent = "Code promo (facultatif) :";
-        card.appendChild(labelCode);
-
+        labelCode.textContent = "Code promo :";
         const inputCode = document.createElement("input");
-        inputCode.type = "text";
-        inputCode.className = "actu-promocode";
         inputCode.placeholder = "Ex : ASV-5WEB";
-        inputCode.value = actu.promoCode || "";
-        card.appendChild(inputCode);
+        inputCode.value = a.promoCode || "";
+        inputCode.oninput = e => a.promoCode = e.target.value;
 
-        const infoCode = document.createElement("p");
-        infoCode.className = "info";
-        infoCode.textContent = "Si tu coches promo et que tu mets un code ici, le site affichera un bouton + la modale avec ce code.";
-        card.appendChild(infoCode);
+        card.appendChild(labelTitre);
+        card.appendChild(inputTitre);
+        card.appendChild(labelDate);
+        card.appendChild(inputDate);
+        card.appendChild(labelPara);
+        card.appendChild(textareaPara);
+        card.appendChild(checkboxRow);
+        card.appendChild(labelCode);
+        card.appendChild(inputCode);
 
         actusContainer.appendChild(card);
       });
     }
 
     addActuBtn.addEventListener("click", () => {
-      stateActualites.push(createEmptyActu());
+      stateActualites.push({
+        titre: "",
+        date: "",
+        paragraphes: [],
+        promo: false,
+        promoCode: ""
+      });
       renderActus();
     });
 
-    function buildJsonFromDom() {
-      const cards = Array.from(document.querySelectorAll(".actu-card"));
-      const actualites = cards.map(card => {
-        const titre = card.querySelector(".actu-titre").value.trim();
-        const date = card.querySelector(".actu-date").value.trim();
-        const paraRaw = card
-          .querySelector(".actu-paragraphes")
-          .value
-          .split("\n")
-          .map(p => p.trim())
-          .filter(p => p.length > 0);
-        const promo = card.querySelector(".actu-promo").checked;
-        const promoCode = card.querySelector(".actu-promocode").value.trim();
+    saveBtn.addEventListener("click", async () => {
+      if (!githubToken) {
+        saveStatus.textContent = "Token GitHub manquant. Reconnecte-toi en haut.";
+        saveStatus.className = "status err";
+        return;
+      }
 
-        return {
-          titre: titre,
-          date: date,
-          paragraphes: paraRaw,
-          promo: promo,
-          promoCode: promoCode
-        };
-      });
+      saveStatus.textContent = "Enregistrement en cours...";
+      saveStatus.className = "status";
 
-      return JSON.stringify({ actualites }, null, 2);
-    }
+      const payloadJson = JSON.stringify({ actualites: stateActualites }, null, 2);
+      const contentB64 = b64EncodeUnicode(payloadJson);
 
-    generateJsonBtn.addEventListener("click", () => {
-      const json = buildJsonFromDom();
-      jsonOutput.value = json;
-      jsonOutput.focus();
-      jsonOutput.select();
+      try {
+        const res = await fetch(
+          `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${FILE_PATH}`,
+          {
+            method: "PUT",
+            headers: {
+              "Authorization": `Bearer ${githubToken}`,
+              "Accept": "application/vnd.github.v3+json`,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              message: "Update actus via admin GitHub Pages",
+              content: contentB64,
+              sha: currentSha,
+              branch: BRANCH
+            })
+          }
+        );
+
+        if (!res.ok) {
+          const txt = await res.text();
+          saveStatus.textContent = "Erreur GitHub (" + res.status + ") : " + txt;
+          saveStatus.className = "status err";
+          return;
+        }
+
+        const data = await res.json();
+        currentSha = data.content.sha;
+        saveStatus.textContent = "✅ Actualités mises à jour sur GitHub.";
+        saveStatus.className = "status ok";
+      } catch (err) {
+        saveStatus.textContent = "Erreur réseau : " + err.message;
+        saveStatus.className = "status err";
+      }
     });
   </script>
 </body>
