@@ -1,24 +1,14 @@
 {
   "actualites": [
     {
-      "titre": "Lancement de notre site web",
+      "titre": "Loi Montagne 2025",
       "date": "",
       "paragraphes": [
-        "Le garage a le plaisir de vous annoncer son arrivée en ligne !",
-        "À cette occasion, profitez de -5% sur le montage de vos pneus."
+        "La Loi Montagne II, appliquée du 1er novembre au 31 mars, oblige les conducteurs à utiliser des pneus hiver 3PMSF ou à transporter des chaînes/chaussettes dans certaines zones montagneuses définies par les préfets (34 départements)."
       ],
-      "promo": true,
+      "promo": false,
       "promoCode": "ASVWEB",
-      "conditions": "ENtre toi et moi je vais te manger "
-    },
-    {
-      "titre": "trop trop ",
-      "date": "",
-      "paragraphes": [
-        "super"
-      ],
-      "promo": true,
-      "promoCode": "hghghgh"
+      "conditions": ""
     }
   ]
 }
