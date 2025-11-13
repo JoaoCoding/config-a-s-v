@@ -9,6 +9,15 @@
       ],
       "promo": true,
       "promoCode": "ASVWEB"
+    },
+    {
+      "titre": "Jose",
+      "date": "2025-11-13",
+      "paragraphes": [
+        "Le meilleur"
+      ],
+      "promo": false,
+      "promoCode": ""
     }
   ]
 }
