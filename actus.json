@@ -9,34 +9,6 @@
       ],
       "promo": true,
       "promoCode": ""
-    },
-    {
-      "titre": "Pré-contrôle technique disponible",
-      "date": "",
-      "paragraphes": [
-        "Pensez à votre contrôle technique : nous proposons un pré-contrôle pour vous éviter les mauvaises surprises.",
-        "Contactez-nous pour prendre rendez-vous."
-      ],
-      "promo": false,
-      "promoCode": ""
-    },
-    {
-      "titre": "OK c'est cool",
-      "date": "",
-      "paragraphes": [
-        "tooooop"
-      ],
-      "promo": false,
-      "promoCode": ""
-    },
-    {
-      "titre": "salut ",
-      "date": "",
-      "paragraphes": [
-        "salut"
-      ],
-      "promo": false,
-      "promoCode": ""
     }
   ]
 }
