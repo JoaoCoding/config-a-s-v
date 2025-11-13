@@ -9,6 +9,15 @@
       ],
       "promo": true,
       "promoCode": "ASVWEB"
+    },
+    {
+      "titre": "Test",
+      "date": "2025-11-13",
+      "paragraphes": [
+        "Test"
+      ],
+      "promo": true,
+      "promoCode": "TOP"
     }
   ]
 }
