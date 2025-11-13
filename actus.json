@@ -1,0 +1,20 @@
+{
+  "actualites": [
+    {
+      "titre": "Lancement de notre site web",
+      "paragraphes": [
+        "Le garage a le plaisir de vous annoncer son arrivée en ligne !",
+        "À cette occasion, profitez de -5% sur le montage de vos pneus."
+      ],
+      "promo": true
+    },
+    {
+      "titre": "Pré-contrôle technique disponible",
+      "paragraphes": [
+        "Pensez à votre contrôle technique : nous proposons un pré-contrôle pour vous éviter les mauvaises surprises.",
+        "Contactez-nous pour prendre rendez-vous."
+      ],
+      "promo": false
+    }
+  ]
+}
