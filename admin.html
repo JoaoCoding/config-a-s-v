@@ -385,14 +385,19 @@
       inputCode.value = a.promoCode || "";
       inputCode.oninput = e => a.promoCode = e.target.value;
       // CONDITIONS
-      const labelCond = document.createElement("label");
-      labelCond.textContent = "Conditions :";
+const labelCond = document.createElement("label");
+labelCond.textContent = "Conditions :";
+
+const textareaCond = document.createElement("textarea");
+textareaCond.className = "small";
+textareaCond.placeholder = "Conditions du code promo…";
+textareaCond.value = a.conditions || "";
+textareaCond.oninput = e => a.conditions = e.target.value;
+
+card.appendChild(labelCond);
+card.appendChild(textareaCond);
+
       
-      const textareaCond = document.createElement("textarea");
-      textareaCond.className = "small";
-      textareaCond.placeholder = "Conditions du code promo…";
-      textareaCond.value = a.conditions || "";
-      textareaCond.oninput = e => a.conditions = e.target.value;
       
       
 
@@ -406,8 +411,7 @@
       card.appendChild(checkboxRow);
       card.appendChild(labelCode);
       card.appendChild(inputCode);
-      card.appendChild(labelCond);
-      card.appendChild(textareaCond);
+      
       actusContainer.appendChild(card);
     });
   }
