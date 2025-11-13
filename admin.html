@@ -309,113 +309,113 @@
   });
 
   // 🔧 Affichage des actus
-  function renderActus() {
-    actusContainer.innerHTML = "";
-    stateActualites.forEach((a, index) => {
-      const card = document.createElement("div");
-      card.className = "actu-card";
+ function renderActus() {
+  actusContainer.innerHTML = "";
+  stateActualites.forEach((a, index) => {
+    const card = document.createElement("div");
+    card.className = "actu-card";
 
-      const header = document.createElement("div");
-      header.className = "actu-header";
-      header.innerHTML = `<span class="badge">Actu #${index + 1}</span>`;
+    const header = document.createElement("div");
+    header.className = "actu-header";
+    header.innerHTML = `<span class="badge">Actu #${index + 1}</span>`;
 
-      const delBtn = document.createElement("button");
-      delBtn.className = "btn danger";
-      delBtn.type = "button";
-      delBtn.textContent = "Supprimer";
-      delBtn.onclick = () => {
-        if (stateActualites.length === 1) {
-          alert("Garde au moins une actualité.");
-          return;
-        }
-        stateActualites.splice(index, 1);
-        renderActus();
-      };
+    const delBtn = document.createElement("button");
+    delBtn.className = "btn danger";
+    delBtn.type = "button";
+    delBtn.textContent = "Supprimer";
+    delBtn.onclick = () => {
+      if (stateActualites.length === 1) {
+        alert("Garde au moins une actualité.");
+        return;
+      }
+      stateActualites.splice(index, 1);
+      renderActus();
+    };
 
-      header.appendChild(delBtn);
-      card.appendChild(header);
+    header.appendChild(delBtn);
+    card.appendChild(header);
 
-      // TITRE
-      const labelTitre = document.createElement("label");
-      labelTitre.textContent = "Titre :";
-      const inputTitre = document.createElement("input");
-      inputTitre.value = a.titre || "";
-      inputTitre.oninput = e => a.titre = e.target.value;
+    // ---- TITRE ----
+    const labelTitre = document.createElement("label");
+    labelTitre.textContent = "Titre :";
+    const inputTitre = document.createElement("input");
+    inputTitre.value = a.titre || "";
+    inputTitre.oninput = e => a.titre = e.target.value;
 
-      // DATE
-      const labelDate = document.createElement("label");
-      labelDate.textContent = "Date (YYYY-MM-DD) :";
-      const inputDate = document.createElement("input");
-      inputDate.placeholder = "2025-11-13";
-      inputDate.value = a.date || "";
-      inputDate.oninput = e => a.date = e.target.value;
+    // ---- DATE ----
+    const labelDate = document.createElement("label");
+    labelDate.textContent = "Date (YYYY-MM-DD) :";
+    const inputDate = document.createElement("input");
+    inputDate.placeholder = "2025-11-13";
+    inputDate.value = a.date || "";
+    inputDate.oninput = e => a.date = e.target.value;
 
-      // PARAGRAPHES
-      const labelPara = document.createElement("label");
-      labelPara.textContent = "Paragraphes (un par ligne) :";
-      const textareaPara = document.createElement("textarea");
-      textareaPara.className = "small";
-      textareaPara.value = Array.isArray(a.paragraphes)
-        ? a.paragraphes.join("\n")
-        : "";
-      textareaPara.oninput = e => {
-        a.paragraphes = e.target.value
-          .split("\n")
-          .map(p => p.trim())
-          .filter(p => p.length > 0);
-      };
+    // ---- PARAGRAPHES ----
+    const labelPara = document.createElement("label");
+    labelPara.textContent = "Paragraphes (un par ligne) :";
+    const textareaPara = document.createElement("textarea");
+    textareaPara.className = "small";
+    textareaPara.value = Array.isArray(a.paragraphes)
+      ? a.paragraphes.join("\n")
+      : "";
+    textareaPara.oninput = e => {
+      a.paragraphes = e.target.value
+        .split("\n")
+        .map(p => p.trim())
+        .filter(p => p.length > 0);
+    };
 
-      // PROMO
-      const checkboxRow = document.createElement("div");
-      checkboxRow.className = "checkbox-row";
-      const promoCheckbox = document.createElement("input");
-      promoCheckbox.type = "checkbox";
-      promoCheckbox.checked = !!a.promo;
-      promoCheckbox.onchange = e => a.promo = e.target.checked;
-      const promoLabel = document.createElement("label");
-      promoLabel.textContent = "Afficher un code promo pour cette actu";
-      checkboxRow.appendChild(promoCheckbox);
-      checkboxRow.appendChild(promoLabel);
+    // ---- PROMO (checkbox) ----
+    const checkboxRow = document.createElement("div");
+    checkboxRow.className = "checkbox-row";
+    const promoCheckbox = document.createElement("input");
+    promoCheckbox.type = "checkbox";
+    promoCheckbox.checked = !!a.promo;
+    promoCheckbox.onchange = e => a.promo = e.target.checked;
+    const promoLabel = document.createElement("label");
+    promoLabel.textContent = "Afficher un code promo pour cette actu";
+    checkboxRow.appendChild(promoCheckbox);
+    checkboxRow.appendChild(promoLabel);
 
-      // CODE PROMO
-      const labelCode = document.createElement("label");
-      labelCode.textContent = "Code promo :";
-      const inputCode = document.createElement("input");
-      inputCode.placeholder = "Ex : ASV-5WEB";
-      inputCode.value = a.promoCode || "";
-      inputCode.oninput = e => a.promoCode = e.target.value;
-      // CONDITIONS
-      const labelCond = document.createElement("label");
-      labelCond.textContent = "Conditions :";
-      
-      const textareaCond = document.createElement("textarea");
-      textareaCond.className = "small";
-      textareaCond.placeholder = "Conditions du code promo…";
-      textareaCond.value = a.conditions || "";
-      textareaCond.oninput = e => a.conditions = e.target.value;
-      
-      
+    // ---- CODE PROMO ----
+    const labelCode = document.createElement("label");
+    labelCode.textContent = "Code promo :";
+    const inputCode = document.createElement("input");
+    inputCode.placeholder = "Ex : ASV-5WEB";
+    inputCode.value = a.promoCode || "";
+    inputCode.oninput = e => a.promoCode = e.target.value;
 
-      
-      
-      
+    // ---- CONDITIONS (TEXTE) ----
+    const labelCond = document.createElement("label");
+    labelCond.textContent = "Conditions (facultatif) :";
+    const textareaCond = document.createElement("textarea");
+    textareaCond.className = "small";
+    textareaCond.placeholder = "Conditions du code promo…";
+    textareaCond.value = a.conditions || "";
+    textareaCond.oninput = e => a.conditions = e.target.value;
 
+    // 👉 ORDONNANCE EXACTE DES CHAMPS DANS L’INTERFACE
+    card.appendChild(labelTitre);
+    card.appendChild(inputTitre);
 
-      card.appendChild(labelTitre);
-      card.appendChild(inputTitre);
-      card.appendChild(labelDate);
-      card.appendChild(inputDate);
-      card.appendChild(labelPara);
-      card.appendChild(textareaPara);
-      card.appendChild(checkboxRow);
-      card.appendChild(labelCode);
-      card.appendChild(inputCode);
-      card.appendChild(labelCond);
-      card.appendChild(textareaCond);
-      
-      actusContainer.appendChild(card);
-    });
-  }
+    card.appendChild(labelDate);
+    card.appendChild(inputDate);
+
+    card.appendChild(labelPara);
+    card.appendChild(textareaPara);
+
+    card.appendChild(checkboxRow);
+
+    card.appendChild(labelCode);
+    card.appendChild(inputCode);
+
+    // 🟢 CONDITIONS TOUT EN BAS
+    card.appendChild(labelCond);
+    card.appendChild(textareaCond);
+
+    actusContainer.appendChild(card);
+  });
+}
 
   // Ajouter actu
   addActuBtn.addEventListener("click", () => {
