@@ -32,7 +32,7 @@
       font-size: 0.9rem;
       opacity: 0.9;
     }
-    input[type="text"], textarea {
+    input[type="text"], input[type="password"], textarea {
       width: 100%;
       box-sizing: border-box;
       padding: 0.6rem 0.7rem;
@@ -161,10 +161,10 @@
   <div class="container">
     <h1>Admin &ndash; Actualités Garage A.S.V</h1>
 
-    <!-- ÉTAPE 0 : pseudo mot de passe simple (juste pour éviter les curieux) -->
+    <!-- Login simple -->
     <section id="login-section">
       <p class="info">
-        Accès réservé. Ce n'est pas une vraie protection, juste un petit verrou côté navigateur.
+        Accès réservé. Ce n'est pas une vraie protection serveur, juste un petit verrou côté navigateur.
       </p>
       <label for="admin-password">Mot de passe admin :</label><br>
       <input type="password" id="admin-password" placeholder="••••••••"><br>
@@ -175,11 +175,11 @@
       <hr style="margin:1.5rem 0; border-color:#1f2937;">
     </section>
 
-    <!-- ÉTAPE 1 : édition des actualités -->
+    <!-- Édition -->
     <section id="editor-section" style="display:none;">
       <div class="step">
         <span class="pill">Étapes</span>
-        <p><strong>1.</strong> Modifie / ajoute tes actualités ci-dessous.</p>
+        <p><strong>1.</strong> Modifie / ajoute tes actualités ci-dessous (titre, texte, promo, code promo, date).</p>
         <p><strong>2.</strong> Clique sur <strong>Générer le JSON</strong>.</p>
         <p><strong>3.</strong> Copie-colle le résultat dans <code>actus.json</code> sur GitHub puis sauvegarde.</p>
       </div>
@@ -201,19 +201,14 @@
 
   <script>
     // -------------------------
-    // CONFIG À ADAPTER
+    // CONFIG
     // -------------------------
-
-    // URL actuelle de ton JSON public
     const ACTUS_URL = "https://joaocoding.github.io/config-a-s-v/actus.json";
-
-    // Petit mot de passe côté client (pas une vraie sécurité)
-    const ADMIN_PASSWORD = "GARAGE-ASV-ADMIN"; // change-le comme tu veux
+    const ADMIN_PASSWORD = "GARAGE-ASV-ADMIN"; // change-le si tu veux
 
     // -------------------------
-    // LOGIN SIMPLIFIÉ
+    // LOGIN
     // -------------------------
-
     const loginSection = document.getElementById("login-section");
     const editorSection = document.getElementById("editor-section");
     const loginBtn = document.getElementById("login-btn");
@@ -231,9 +226,8 @@
     });
 
     // -------------------------
-    // LOGIQUE D'ÉDITION
+    // ÉDITION
     // -------------------------
-
     let stateActualites = [];
 
     const actusContainer = document.getElementById("actus-container");
@@ -244,8 +238,10 @@
     function createEmptyActu() {
       return {
         titre: "",
+        date: "",
         paragraphes: [],
-        promo: false
+        promo: false,
+        promoCode: ""
       };
     }
 
@@ -257,10 +253,20 @@
           return res.json();
         })
         .then(data => {
-          stateActualites = Array.isArray(data.actualites) ? data.actualites : [];
+          const arr = Array.isArray(data.actualites) ? data.actualites : [];
+          // On normalise les objets pour être sûr qu'ils aient tous les champs
+          stateActualites = arr.map(a => ({
+            titre: a.titre || "",
+            date: a.date || "",
+            paragraphes: Array.isArray(a.paragraphes) ? a.paragraphes : [],
+            promo: !!a.promo,
+            promoCode: a.promoCode || ""
+          }));
+
           if (!stateActualites.length) {
             stateActualites.push(createEmptyActu());
           }
+
           renderActus();
         })
         .catch(err => {
@@ -311,6 +317,18 @@
         inputTitre.value = actu.titre || "";
         card.appendChild(inputTitre);
 
+        // Date
+        const labelDate = document.createElement("label");
+        labelDate.textContent = "Date (YYYY-MM-DD) pour le badge “Nouveau !” :";
+        card.appendChild(labelDate);
+
+        const inputDate = document.createElement("input");
+        inputDate.type = "text";
+        inputDate.className = "actu-date";
+        inputDate.placeholder = "2025-11-13";
+        inputDate.value = actu.date || "";
+        card.appendChild(inputDate);
+
         // Paragraphes
         const labelPara = document.createElement("label");
         labelPara.textContent = "Paragraphes (un paragraphe par ligne) :";
@@ -328,7 +346,7 @@
         infoPara.textContent = "Ex : ligne 1 = phrase 1, ligne 2 = phrase 2, etc.";
         card.appendChild(infoPara);
 
-        // Promo
+        // Promo + Code promo
         const checkboxRow = document.createElement("div");
         checkboxRow.className = "checkbox-row";
 
@@ -338,11 +356,27 @@
         promoCheckbox.checked = !!actu.promo;
 
         const promoLabel = document.createElement("label");
-        promoLabel.textContent = "Afficher le bouton “Voir le code promo” pour cette actu";
+        promoLabel.textContent = "Afficher un code promo pour cette actu";
 
         checkboxRow.appendChild(promoCheckbox);
         checkboxRow.appendChild(promoLabel);
         card.appendChild(checkboxRow);
+
+        const labelCode = document.createElement("label");
+        labelCode.textContent = "Code promo (facultatif) :";
+        card.appendChild(labelCode);
+
+        const inputCode = document.createElement("input");
+        inputCode.type = "text";
+        inputCode.className = "actu-promocode";
+        inputCode.placeholder = "Ex : ASV-5WEB";
+        inputCode.value = actu.promoCode || "";
+        card.appendChild(inputCode);
+
+        const infoCode = document.createElement("p");
+        infoCode.className = "info";
+        infoCode.textContent = "Si tu coches promo et que tu mets un code ici, le site affichera un bouton + la modale avec ce code.";
+        card.appendChild(infoCode);
 
         actusContainer.appendChild(card);
       });
@@ -357,6 +391,7 @@
       const cards = Array.from(document.querySelectorAll(".actu-card"));
       const actualites = cards.map(card => {
         const titre = card.querySelector(".actu-titre").value.trim();
+        const date = card.querySelector(".actu-date").value.trim();
         const paraRaw = card
           .querySelector(".actu-paragraphes")
           .value
@@ -364,11 +399,14 @@
           .map(p => p.trim())
           .filter(p => p.length > 0);
         const promo = card.querySelector(".actu-promo").checked;
+        const promoCode = card.querySelector(".actu-promocode").value.trim();
 
         return {
           titre: titre,
+          date: date,
           paragraphes: paraRaw,
-          promo: promo
+          promo: promo,
+          promoCode: promoCode
         };
       });
 
