@@ -8,7 +8,7 @@
         "À cette occasion, profitez de -5% sur le montage de vos pneus."
       ],
       "promo": true,
-      "promoCode": "ASVWEB"
+      "promoCode": ""
     },
     {
       "titre": "Pré-contrôle technique disponible",
@@ -16,6 +16,15 @@
       "paragraphes": [
         "Pensez à votre contrôle technique : nous proposons un pré-contrôle pour vous éviter les mauvaises surprises.",
         "Contactez-nous pour prendre rendez-vous."
+      ],
+      "promo": false,
+      "promoCode": ""
+    },
+    {
+      "titre": "OK c'est cool",
+      "date": "",
+      "paragraphes": [
+        "tooooop"
       ],
       "promo": false,
       "promoCode": ""
