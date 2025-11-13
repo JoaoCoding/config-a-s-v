@@ -9,6 +9,15 @@
       ],
       "promo": true,
       "promoCode": "ASVWEB"
+    },
+    {
+      "titre": "OKK 22",
+      "date": "",
+      "paragraphes": [
+        "SAlut bienvuenu"
+      ],
+      "promo": false,
+      "promoCode": ""
     }
   ]
 }
