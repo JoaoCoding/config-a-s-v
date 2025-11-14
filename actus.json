@@ -9,6 +9,16 @@
       "promo": false,
       "promoCode": "",
       "conditions": ""
+    },
+    {
+      "titre": "Test",
+      "date": "",
+      "paragraphes": [
+        "Test"
+      ],
+      "promo": true,
+      "promoCode": "Test",
+      "conditions": "Les cons"
     }
   ]
 }
